@@ -1,0 +1,17 @@
+| File         | Purpose                         |
+| ------------ | ------------------------------- |
+| index.js     | start server                    |
+| app.js       | configure middleware and routes |
+| connectDB    | connect database                |
+| user model   | database structure              |
+| controllers  | business logic                  |
+| asyncHandler | catch async errors              |
+| ApiResponse  | format successful responses     |
+| ApiError     | format error responses          |
+
+middleware->valiations->routes
+    |                     ^
+    v                     |
+    ----------------------
+
+express has no cookies acess so cookie-parser is used
