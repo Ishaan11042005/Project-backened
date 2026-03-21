@@ -73,7 +73,7 @@ const getProjectById = asyncHandler(async (req, res) => {
     );
 });
 
-const createProjects = asyncHandler(async (req, res) => {
+const createProject = asyncHandler(async (req, res) => {
     const { name, description } = req.body;
 
     const project = await Project.create({
@@ -249,7 +249,7 @@ const deleteMember = asyncHandler(async (req, res) => {
 
 export {
     addMembersToProject,
-    createProjects,
+    createProject,
     deleteMember,
     getProjectById,
     getProjects,
