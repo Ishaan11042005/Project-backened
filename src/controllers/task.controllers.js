@@ -9,9 +9,55 @@ import mongoose from "mongoose";
 import { AvailableUserRole, UserRolesEnum } from "../utils/constants.js";
 
 
-const getTasks=asyncHandler(async(req,res)=>{})
+const getTasks=asyncHandler(async(req,res)=>{
+    const {title,description,assignedTo,status}=req.body;
+    const {projectId}=req.params;
+    if(!project){
+        throw new ApiError(404,"Project Not found")
+    }
+    const tasks=await Tasks.find({
+        project:new mongoose.Types.ObjectId(projectId)
+    }).populate("assignedTo","avatar username fullName")
 
-const createTask=asyncHandler(async(req,res)=>{})
+    return res
+    .stauts(201)
+    .json(
+        new ApiResponse(201,tasks,"Task fetched")
+    )
+})
+
+const createTask=asyncHandler(async(req,res)=>{
+    const {title,description,assignedTo,status}=req.body;
+    const {projectId}=req.params;
+
+    const project=await Project.findById(projectId);
+    if(!project){
+        throw new ApiError(404,"Project Not found")
+    }
+    const files=req.files || [];
+    const attachments=files.map((file)=>{
+        return {
+            url:`${process.env.SERVER_URL}/images/${file.originalname}`,
+            mimetype:file.mimetype,
+            size:file.size
+
+        }
+    })
+    const task=await Tasks.create({
+        title,
+        description,
+        project:new mongoose.Types.ObjectId(projectId),
+        assignedTo:assignedTo?new mongoose.Types.ObjectId(assignedTo):undefined,
+        status,
+        assignedBy:new mongoose.Types.ObjectId(req.user._id),
+        attachments
+    })
+    return res
+    .stauts(201)
+    .json(
+        new ApiResponse(201,task,"Task Created")
+    )
+})
 
 const getTaskById=asyncHandler(async(req,res)=>{})
 
